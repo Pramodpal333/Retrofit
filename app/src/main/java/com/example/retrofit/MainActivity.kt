@@ -4,19 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofit.api.ApiInterface
 import com.example.retrofit.api.ApiUtilities
 import com.example.retrofit.recyclerview.Item
 import com.example.retrofit.recyclerview.MyAdapter
+import com.example.retrofit.recyclerview.urlClicked
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.create
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), urlClicked {
 
         private lateinit var recyclerView: RecyclerView
         private lateinit var myAdapter: MyAdapter
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         // Adapter
         rvUserArray = ArrayList() // list
-        myAdapter = MyAdapter(rvUserArray)
+        myAdapter = MyAdapter(rvUserArray,this)
         // Adapter
 
         val usersApi = ApiUtilities.getSome().create(ApiInterface::class.java)
@@ -72,4 +74,9 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+    override fun onUrlClicked(item: Item) {
+        Toast.makeText(this,"Clicked on $item ", Toast.LENGTH_LONG).show()
+    }
+
 }
