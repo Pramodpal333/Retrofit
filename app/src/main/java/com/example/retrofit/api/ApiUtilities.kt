@@ -3,12 +3,12 @@ package com.example.retrofit.api
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ApiUtilities {
-    val BASE_URL = "https://api.github.com"
+object ApiUtilities {
+   private val BASE_UR = "https://api.github.com"
 
-    fun getInstance(): Retrofit{
+    fun getSome(): Retrofit{
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_UR)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
