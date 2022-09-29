@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.retrofit.api.ApiInterface
 import com.example.retrofit.api.ApiUtilities
+import com.example.retrofit.recyclerview.Item
+import com.example.retrofit.recyclerview.MyAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -14,22 +18,29 @@ import retrofit2.create
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var tvData: TextView
-    private lateinit var tvUrl: TextView
-    private lateinit var tvLast: TextView
+        private lateinit var recyclerView: RecyclerView
+        private lateinit var myAdapter: MyAdapter
 
     private var storedName = ""
     private var storedUrl = ""
     private  var urlArray = ArrayList<String>()
     private var nameArray  = ArrayList<String>()
+    private var  rvUserArray = ArrayList<Item>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tvData = findViewById(R.id.tvData)
-        tvUrl = findViewById(R.id.tvUrl)
-        tvLast = findViewById(R.id.last)
+        // RecyclerView
+        recyclerView = findViewById(R.id.rvList)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        // RecyclerView
+
+        // Adapter
+        rvUserArray = ArrayList() // list
+        myAdapter = MyAdapter(rvUserArray)
+        // Adapter
 
         val usersApi = ApiUtilities.getSome().create(ApiInterface::class.java)
 
@@ -47,22 +58,18 @@ class MainActivity : AppCompatActivity() {
 //                        storedUrl +=  it.url + "  \n"
                         nameArray.add(currentData)
                         urlArray.add(it.url)
+                        var rvList = Item("${it.login}","${it.url}")
+                        rvUserArray.add(rvList)
+                        recyclerView.adapter = myAdapter
                     }
-                    tvData.text = nameArray[0]
-                    tvUrl.text = urlArray[0]
+
                 }
 
             }
         }
 
-        tvData.setOnClickListener{
-          tvLast.text = "Textview Name Clicked"
-        }
 
-        tvUrl.setOnClickListener{
-            tvLast.text = "Textview Url Clicked"
-            Log.d("URL","$storedUrl")
-        }
+
 
     }
 }
