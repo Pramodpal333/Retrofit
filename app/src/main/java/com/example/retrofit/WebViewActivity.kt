@@ -14,8 +14,8 @@ class WebViewActivity : AppCompatActivity() {
 
             wvUrl = findViewById(R.id.wvUrl)
 
-//        val urlLink = getStringExtra("")
+       val urlLink = intent.getStringExtra("URL")
         wvUrl.webViewClient = WebViewClient()
-        wvUrl.loadUrl("www.google.com")
+        wvUrl.loadUrl("$urlLink")
     }
 }

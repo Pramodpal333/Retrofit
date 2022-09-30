@@ -1,5 +1,6 @@
 package com.example.retrofit
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -59,11 +60,13 @@ class MainActivity : AppCompatActivity(), urlClicked {
 //                        storedName += currentData + " : \n"
 //                        storedUrl +=  it.url + "  \n"
                         nameArray.add(currentData)
-                        urlArray.add(it.url)
-                        var rvList = Item("${it.login}","${it.url}")
+                        urlArray.add(it.avatar_url)
+                        Log.d("PROFILE","This $urlArray")
+                        var rvList = Item("${it.login}","${it.avatar_url}")
                         rvUserArray.add(rvList)
                         recyclerView.adapter = myAdapter
                     }
+
 
                 }
 
@@ -73,10 +76,30 @@ class MainActivity : AppCompatActivity(), urlClicked {
 
 
 
+        myAdapter.onItemClickListener(object :MyAdapter.onItemClickedListener{
+            override fun onItemClick(position: Int) {
+
+                Toast.makeText(this@MainActivity,"$position clicked",Toast.LENGTH_LONG).show()
+//                val intent = Intent(this@MainActivity, WebViewActivity::class.java)
+               Log.d("SEE","$position" )
+//                intent.putExtra("URL",)
+
+            }
+
+        })
+
+
     }
 
     override fun onUrlClicked(item: Item) {
-        Toast.makeText(this,"Clicked on $item ", Toast.LENGTH_LONG).show()
-    }
+        val new = item.url
+        val i = Intent(this@MainActivity, WebViewActivity::class.java)
+        i.putExtra("URL","$new")
+        Log.d("YOO","$new")
+        startActivity(i)
 
+//     Toast.makeText(this,"Clicked on $item ", Toast.LENGTH_LONG).show()
+//        Log.d("SEE","$item" )
+
+    }
 }
